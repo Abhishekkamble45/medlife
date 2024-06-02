@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { CartService } from './cart.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-cart',
@@ -9,7 +10,7 @@ import { CartService } from './cart.service';
 export class CartComponent implements OnInit {
   finalOrder: Order = new Order();
 
-  constructor(private cart: CartService) { }
+  constructor(private cart: CartService,private router:Router) { }
   ngOnInit(): void {
     let cartItem = this.cart.getProductsDataFromLocalStoarge();
     this.setCartItem(cartItem);
@@ -63,13 +64,18 @@ export class CartComponent implements OnInit {
     this.calculateTotalPrice();
   }
 
+  checkout(){
+    this.cart.setOrderDetails(this.finalOrder);
+    this.router.navigate(['/cart/booking-details']);
+  }
+
 }
 
 class Order {
   orderId!: number;
-  fullName!: string;
-  mobileNo!: number;
-  emailId!: string;
+  // fullName!: string;
+  // mobileNo!: number;
+  // emailId!: string;
   products!: Product[];
   totalAmount!: number;
   totalDiscount!: number;
@@ -77,14 +83,14 @@ class Order {
   deliveryType!: string;
 }
 
-class Address {
-  line1!: string;
-  line2!: string;
-  city!: string;
-  state!: string;
-  pincode!: string;
-  country!: string;
-}
+// class Address {
+//   line1!: string;
+//   line2!: string;
+//   city!: string;
+//   state!: string;
+//   pincode!: string;
+//   country!: string;
+// }
 
 class Product {
   drugCode!: string;
